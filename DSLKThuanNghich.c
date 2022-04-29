@@ -113,10 +113,48 @@ int suaNode(List* l, int d){
     vt->data=nhapData();
     return 1;
 }
+void hoanDoi2Node(List* l, Node* p1, Node* p2){
+    if (p1==p2) return;
+    if (p1->next==p2){
+        if(p1==l->pHead)
+            l->pHead=p2;
+        else
+            p1->prev->next=p2;
+        if(p2==l->pTail)
+            l->pTail=p1;
+        else
+            p2->next->prev=p1;
+        p2->prev=p1->prev;
+        p1->next=p2->next;
+        p2->next=p1;
+        p1->prev=p2;
+    }
+    else if (p1->prev==p2){
+        hoanDoi2Node(l,p2,p1);
+    }
+    else{
+        if (p1==l->pHead)
+            l->pHead=p2;
+        else
+            p1->prev->next=p2;
+        p1->next->prev =p2;
+        p2->prev->next=p1;
+        if (p2==l->pTail)
+            l->pTail=p1;
+        else
+            p2->next->prev=p1;
+        Node tmp=(*p2);
+        p2->next=p1->next;
+        p2->prev=p1->prev;
+        p1->next=tmp.next;
+        p1->prev=tmp.prev;
+    }
+}
 void hienThi(List* l){
     for(Node* i=l->pHead; i!=NULL; i=i->next){
         printf("%d ",i->data);
     }
+    printf("\n");
 }
 void xoaDanhSach(List* l){
     while (l->pHead!=NULL){
@@ -132,10 +170,11 @@ int main(){
     themNodeVaoCuoi(&l,taoNode(nhapData()));
     themNodeVaoCuoi(&l,taoNode(nhapData()));
     themNodeVaoCuoi(&l,taoNode(nhapData()));
-    int ok=suaNode(&l,3);
-    if (ok==0) printf("Khong tim thay\n");
-    if (ok==1) printf("Sua thanh cong\n");
-    hienThi(&l);
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    while(1){hoanDoi2Node(&l,layDiaChiTheoTen(&l,nhapData().giaTri),layDiaChiTheoTen(&l,nhapData().giaTri));
+    hienThi(&l);}
+    //printf("%d",l.pHead->prev->prev->data);
     xoaDanhSach(&l);
     return 0;
 }
