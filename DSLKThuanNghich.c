@@ -90,21 +90,26 @@ int chenNodeVaoSau(List* l, int d){ //char ten[]){
     pNode->prev=vt;
     return 1;
 }
-int xoaNode(List* l, int d){//char ten[]){
+int xoaNodeTheoData(List* l, int d){//char ten[]){
     Node* vt=layDiaChiTheoTen(l,d);
     if(vt==NULL) return 0;
-    if (l->pHead==l->pTail)
-        init(l);
-    else{
-        if (l->pHead!=vt)
-            vt->prev->next=vt->next;
-        else l->pHead=l->pHead->next;
-        if (l->pTail!=vt)
-            vt->next->prev=vt->prev;
-        else l->pTail=l->pTail->prev;
-        free(vt);
-    }
+    if (l->pHead!=vt)
+        vt->prev->next=vt->next;
+    else l->pHead=l->pHead->next;
+    if (l->pTail!=vt)
+        vt->next->prev=vt->prev;
+    else l->pTail=l->pTail->prev;
+    free(vt);
     return 1;
+}
+void xoaNodeTheoDiaChi(List* l, Node* vt){
+    if (l->pHead!=vt)
+        vt->prev->next=vt->next;
+    else l->pHead=l->pHead->next;
+    if (l->pTail!=vt)
+        vt->next->prev=vt->prev;
+    else l->pTail=l->pTail->prev;
+    free(vt);
 }
 int suaNode(List* l, int d){
     Node* vt=layDiaChiTheoTen(l,d);
@@ -113,8 +118,7 @@ int suaNode(List* l, int d){
     vt->data=nhapData();
     return 1;
 }
-void hoanDoi2Node(List* l, Node* p1, Node* p2, Node* p3){
-    printf("%d %d %d\n",p1->data.giaTri, p2->data.giaTri,p3->data.giaTri);
+void hoanDoi2Node(List* l, Node* p1, Node* p2){
     //Trường hợp hai node cùng vị trí
     if (p1==p2) return;
     //Trường hợp 2 node cạnh nhau
@@ -133,7 +137,7 @@ void hoanDoi2Node(List* l, Node* p1, Node* p2, Node* p3){
         p1->prev=p2;
     }
     else if (p1->prev==p2){
-        hoanDoi2Node(l,p2,p1,p3);
+        hoanDoi2Node(l,p2,p1 );
     }
     //Trường hợp hai node ở hai vị trí xa nhau
     else{
@@ -162,7 +166,35 @@ void hoanDoi2Node(List* l, Node* p1, Node* p2, Node* p3){
         p1->prev=tmp.prev;
     }
 }
+/*void daoNguocDS(List* l){
+    if (l->pHead==l->pTail) return;
+    for(Node* i=l->pHead->next; i!=NULL; i=i->next){
+        Node* tmp =i->prev->next;
+        i->prev->next=i->prev->prev;
+        i->prev->prev=tmp;
+    }
+    Node* tmp=l->pHead;
+    l->pHead=l->pTail;
+    l->pTail=tmp;
+}*/
+void xoaPhanTuTrung(List* l){
+    Node* i=l->pHead;
+    while(i!=l->pTail){
+        Node* j=i;
+        while(j->next!=NULL){
+            if (i->data.giaTri==j->next->data.giaTri){
+                xoaNodeTheoDiaChi(l,j->next);
+            }
+            else j=j->next;
+        }
+        i=i->next;
+        if (i==NULL) break;
+    }
+}
 void hienThi(List* l){
+    if (l->pTail==NULL){
+        printf("Trong\n");
+    }
     for(Node* i=l->pHead; i!=NULL; i=i->next){
         printf("%d ",i->data);
     }
@@ -182,5 +214,14 @@ void in(int a, int b, int c){
 int main(){
     List l;
     init(&l);
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    themNodeVaoCuoi(&l,taoNode(nhapData()));
+    xoaPhanTuTrung(&l);
+    hienThi(&l);
+    xoaDanhSach(&l);
     return 0;
 }
