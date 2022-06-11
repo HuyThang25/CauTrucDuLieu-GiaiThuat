@@ -55,16 +55,16 @@ void inorderTravelal(Node* pNode){
     if (pNode==NULL){
         return;
     }
-    preorderTravelal(pNode->left);
+    inorderTravelal(pNode->left);
     printf("%d ",pNode->data);
-    preorderTravelal(pNode->right);
+    inorderTravelal(pNode->right);
 }
 void postorderTravelal(Node* pNode){
     if (pNode==NULL){
         return;
     }
-    preorderTravelal(pNode->left);
-    preorderTravelal(pNode->right);
+    postorderTravelal(pNode->left);
+    postorderTravelal(pNode->right);
     printf("%d ",pNode->data);
 }
 int isValueExist(Node* pNode, int value){
@@ -114,30 +114,43 @@ Node* findMaxValueLeftNode(Node* root){
     return findMaxValueLeftNode(root->right);
 }
 int removeNode(Node** root, int value){
-    Node* replacedNode = findNodeByValue(*root,value);
-    if (replacedNode == NULL) return 0;
-    Node* delNode=NULL;
-    if (replacedNode->left == NULL && replacedNode->right == NULL){
-        delNode = replacedNode;
+    Node* delNode = findNodeByValue(*root,value);
+    if (delNode == NULL) return 0;
+    Node* successorNode=NULL;
+        //Tìm kiếm node thế
+    //Trường hợp node cần xoá có 2 node con
+    if (delNode->left != NULL && delNode->right != NULL){
+        Node* successorNode1 = findMaxValueLeftNode(delNode->left);
+        Node* successorNode2 = findMinValueRightNode(delNode->right);
+        printf("Node co the thay the: %d %d\n",successorNode1->data,successorNode2->data);
+        printf("Chon Node: ");
+        int chon;
+        scanf("%d",&chon);
+        successorNode= chon==successorNode1->data? successorNode1 : successorNode2;
     }
-    else if (replacedNode->left != NULL){
-        delNode = findMaxValueLeftNode(replacedNode->left);
-    }
+    //Trương hơp node cần xoá có 1 node con hoặc không có node nào
     else {
-        delNode = findMinValueRightNode(replacedNode->right);
+        successorNode = delNode;
     }
-    int valueOfdelNode =  delNode->data;
-    Node* preDelNode = findPreNodeByValue(*root,valueOfdelNode);
-    //Truong hop cay co 1 node
-    if (preDelNode==NULL){
-        *root=NULL;
+    int valueOfSuccessorNode =  successorNode->data;
+    Node* presuccessorNode = findPreNodeByValue(*root,valueOfSuccessorNode);
+        //Xoá Node
+    //Trường hợp Node cần xoá ở đầu và có nhiều nhất là 1 Node con
+    if (presuccessorNode==NULL){
+        *root= delNode->left==NULL ? delNode->right : delNode->right;
     }
+    //Trường hợp Node cần xoá không ở đầu và có nhiều nhất là 1 Node con
+    else if (delNode == successorNode){
+        if (presuccessorNode->left==successorNode) presuccessorNode->left= delNode->left==NULL ? delNode->right : delNode->right;
+        else presuccessorNode->right= delNode->left==NULL ? delNode->right : delNode->right;
+    }
+    //Trường hợp Node cần xoá có 2 Node con
     else{
-        if (preDelNode->left==delNode) preDelNode->left=delNode->left;
-        else preDelNode->right=delNode->right;
-        replacedNode->data=valueOfdelNode;
+        if (presuccessorNode->left==successorNode) presuccessorNode->left=successorNode->left;
+        else presuccessorNode->right=successorNode->right;
+        delNode->data=valueOfSuccessorNode;
     }
-    free(delNode);
+    free(successorNode);
     return 1;
 
 }
@@ -166,6 +179,8 @@ void deleteBinaryTree(Node* pNode){
         deleteBinaryTree(pNode->right);
         free(pNode);
     }
+}
+void displayBinaryTree(Node* root){
 }
 void displayMenu(){
     printf("1. Tao cay nhi phan tim kiem.\n");
