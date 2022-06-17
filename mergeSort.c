@@ -11,11 +11,6 @@ void inMang(int a[], int n){
     }
     printf("\n");
 }
-void swap(int* a, int* b){
-    int tmp =*a;
-    *a=*b;
-    *b=tmp;
-}
 //Hàm trộn hai mảng (Mảng 1 từ left dến mid-1) (Mảng 2 từ mid dến right-1)
 void merge(int a[], int left, int mid , int right){
     int lengthOfArrLeft=mid-left, lengthOfArrRight= right-mid;
@@ -55,6 +50,7 @@ int main(){
     scanf("%d ",&n);
     int a[n];
     nhapMang(a,n);
+    inMang(a,n);
     mergeSort(a,0,n);
     inMang(a,n);
     return 0;
