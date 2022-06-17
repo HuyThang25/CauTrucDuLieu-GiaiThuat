@@ -17,6 +17,7 @@ void swap(int* a, int* b){
     *b=tmp;
 }
 void quickSort(int a[], int left, int right){
+    // Phân mảng thành 2 phần: phần 1 là những số nhỏ hơn x; phần 2 là những số lớn hơn x
     int x=a[(left+right)/2];
     int i=left, j=right;
     do{
@@ -32,15 +33,16 @@ void quickSort(int a[], int left, int right){
             j--;
         }
     } while(i<=j) ;
+    //Sắp xếp tiếp những phần 1 và 2
     if (left<j) quickSort(a,left,j);
     if (i<right) quickSort(a,i,right);
-
 }
 int main(){
     int n;
     scanf("%d ",&n);
     int a[n];
     nhapMang(a,n);
+    inMang(a,n);
     quickSort(a,0,n-1);
     inMang(a,n);
     return 0;
