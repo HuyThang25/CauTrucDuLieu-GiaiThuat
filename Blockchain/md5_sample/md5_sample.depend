@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1655994912 source:c:\users\anhh\desktop\md5-c\md5.c
+	"md5.h"
+
+1655994912 c:\users\anhh\desktop\md5-c\md5.h
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	<stdlib.h>
+
+1655997611 source:c:\users\anhh\desktop\md5-c\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdint.h>
+	"md5.h"
+

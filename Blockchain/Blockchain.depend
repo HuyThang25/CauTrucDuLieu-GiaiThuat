@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1656003311 source:d:\codeblock\blockchain\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdint.h>
+	"md5.c"
+
+1656002146 d:\codeblock\blockchain\md5.h
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	<stdlib.h>
+
+1656001217 d:\codeblock\blockchain\md5.c
+	"md5.h"
+
