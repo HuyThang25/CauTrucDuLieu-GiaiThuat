@@ -1,5 +1,9 @@
 #include<stdio.h>
-
+// Tư tưởng của thuật toán này là coi mảng là một cây hoành chỉnh với node thứ i thì có 2 node con là 2*i và 2*i+1
+// Thực hiện đẩy các node có giá trị lớn hơn từ dưới lá dần lên trên đầu
+// Khi thực hiện xong thì root sẽ là node lớn nhất
+// Chuyển root xuống cuối mảng và không xét phần tử đó nữa (chỉ xét mảng từ 0 đến n-2)
+// Làm tương tự như thế cho đến khi mảng còn 1 phần tử.
 void nhapMang(int a[], int n){
     for(int i=0; i<n; i++){
         scanf("%d",a+i);
@@ -49,7 +53,7 @@ void heapify(int a[], int n, int i){
     int root= i;
     int left = 2*i+1;
     int right = 2*i+2;
-    int indexOfMax = root; // Chỉ số của phần tử có giá trị to nhất trong 3 node
+    int indexOfMax = root;  // Biến lưu địa chỉ của node có giá trị lớn nhất trong 3 node
     if (left < n && a[left]>=a[indexOfMax]){
         indexOfMax = left;
 
@@ -58,19 +62,19 @@ void heapify(int a[], int n, int i){
         indexOfMax = right;
     }
     if (indexOfMax!=root){
-        swap(a+indexOfMax,a+root);
-        heapify(a,n,indexOfMax);
+        swap(a+indexOfMax,a+root);  // Đảo giá trị của node lớn nhất cho root
+        heapify(a,n,indexOfMax); // Tiếp tục chuyển xuống node có giá trị lớn nhất trước đó để làm tương tự
     }
 }
 void heapSort(int a[], int n){
-    // Săp xếp cây sao cho các node cha có giá trị lớn hơn tất cả các node con của nó
+    // Thực hiện đẩy giá trị lớn nhất của cây lên root của cây, đồng thời thì cững sắp xếp các node cha luôn lớn các node con
     for(int i=n/2-1; i>=0; i--){
         heapify(a,n,i);
     }
     for(int i=n-1; i>=0; i--){
         //Đảo phần tử lớn nhất xuống cuối
         swap(a,a+i);
-        // Săp xếp cây sao cho các node cha có giá trị lớn hơn tất cả các node con của nó(Do trước đó đã được sắp xếp mà chỉ đổi một phần tử lên đầu lên chỉ cần sử dụng hàm dưới 1 lần)
+        //Lại vun giá trị lớn nhất lên root và không xét phần tử cuối nữa
         heapify(a,i,0);
     }
 }
